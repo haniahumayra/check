@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Recipe | Dishcovery</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body data-view="guest">
+    <!-- Navigation -->
+    <nav id="navbar">
+        <a href="index.html" class="logo">
+            <img src="images/logo_dishcovery.png" alt="Dishcovery Logo" style="height: 45px;">
+            <span>DISHCOVERY</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="index.html#recipes-section" class="active">RECIPE</a></li>
+            <li><a href="about.html">ABOUT US</a></li>
+        </ul>
+        <div class="nav-actions">
+            <div class="nav-search">
+                <i class="fas fa-search"></i>
+                <input type="text" id="recipe-search" placeholder="search recipe...">
+            </div>
+            <div class="guest-only">
+                <a href="login.html" class="btn btn-primary">LOGIN</a>
+            </div>
+            <div class="user-only user-profile">
+                <div class="avatar" onclick="logout()">
+                    <img src="images/avatar.png" alt="User Avatar">
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="recipe-detail-container">
+        <div class="back-nav">
+            <a href="javascript:history.back()" class="back-link"><i class="fas fa-chevron-left"></i></a>
+            <div class="breadcrumb">
+                <a href="index.html">HOME</a> / <span id="breadcrumb-recipe-name">RECIPE</span>
+            </div>
+        </div>
+
+        <section class="recipe-hero">
+            <div class="recipe-hero-image">
+                <img id="recipe-main-img" src="" alt="Recipe Image">
+            </div>
+            <div class="recipe-hero-info">
+                <div class="author-info">
+                    <img src="images/avatar.png" alt="Author" class="author-avatar">
+                    <span class="author-name">Alex trailor</span>
+                </div>
+                <h1 id="recipe-title">Loading Recipe...</h1>
+                <p id="recipe-description">Please wait while we load the recipe details for you.</p>
+                <div class="recipe-actions">
+                    <button class="action-btn heart-btn"><i class="far fa-heart"></i></button>
+                    <button class="action-btn"><i class="fas fa-share-alt"></i></button>
+                </div>
+            </div>
+        </section>
+
+        <section class="recipe-body">
+            <div class="ingredients-section">
+                <h2>Ingredients</h2>
+                <div class="portion-selector">
+                    <i class="fas fa-user-friends"></i>
+                    <span id="recipe-servings">2 portion</span>
+                </div>
+                <ul class="ingredients-list" id="ingredients-list">
+                    <!-- Dynamic Ingredients -->
+                </ul>
+            </div>
+
+            <div class="instructions-section">
+                <h2>Cooking Instructions</h2>
+                <div class="instructions-steps" id="instructions-list">
+                    <!-- Dynamic Instructions -->
+                </div>
+            </div>
+        </section>
+
+        <hr class="section-divider">
+
+        <section class="similar-recipes-section">
+            <div class="section-header">
+                <h2>A SIMILAR RECIPE</h2>
+                <p>Find something you'll enjoy from our varied recipe selection</p>
+            </div>
+            <div class="recipe-grid" id="similar-recipes-grid">
+                <!-- Dynamic Similar Recipes -->
+            </div>
+        </section>
+    </main>
+
+    <footer class="premium-footer">
+        <div class="footer-top">
+            <div class="footer-brand-section">
+                <h3 class="footer-logo-text">DISHCOVERY</h3>
+                <p class="footer-tagline">Elevating your home cooking experience with curated recipes and simple, flavorful techniques.</p>
+                <div class="footer-social-icons">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-nav-section">
+                <div class="footer-nav-col">
+                    <h4>QUICK LINKS</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#recipes-section">Recipe</a></li>
+                        <li><a href="#">Categories</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-nav-col">
+                    <h4>SUPPORT</h4>
+                    <ul>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Cooking Tips</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-newsletter">
+                <h4>JOIN THE CULINARY CLUB</h4>
+                <p>Get weekly recipe inspiration delivered to your inbox.</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Your email address">
+                    <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>Dishcovery © 2026 All Rights Reserverd.</p>
+            <div class="footer-bottom-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms Conditions</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Create Recipe Button -->
+    <button class="floating-create-btn" onclick="handleCreateRecipe()">
+        <i class="fas fa-plus"></i>
+        <span>CREATE RECIPE</span>
+    </button>
+
+    <script src="view_recipe.js"></script>
+    <script>
+        
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        if (isLoggedIn) document.body.setAttribute('data-view', 'user');
+        
+        window.logout = () => {
+            localStorage.removeItem('isLoggedIn');
+            window.location.reload();
+        };
+
+        function handleCreateRecipe() {
+            if (isLoggedIn) {
+                window.location.href = 'create_recipe.html';
+            } else {
+                window.location.href = 'login.html';
+            }
+        }
+    </script>
+</body>
+</html>

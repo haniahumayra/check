@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Dishcovery</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            background: #FDFCF8;
+            overflow: hidden;
+        }
+        .auth-bg {
+            flex: 1.2; 
+            background: url('images/login-signin_bg.jpeg') center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .auth-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.3);
+        }
+        .auth-bg h1 {
+            color: white;
+            font-size: 5rem;
+            font-family: 'Outfit', sans-serif;
+            z-index: 1;
+            font-weight: 800;
+            letter-spacing: -2px;
+        }
+        .auth-container {
+            flex: 0.8; 
+            max-width: 550px;
+            padding: 4rem 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            background: white;
+        }
+        .auth-logo {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            width: 40px;
+        }
+        .auth-header {
+            margin-bottom: 2.5rem;
+            text-align: center;
+        }
+        .auth-header h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-family: 'Outfit', serif;
+        }
+        .auth-header p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+        .form-input {
+            position: relative;
+        }
+        .form-input label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0.4rem;
+        }
+        .form-input input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: #F4F4F4;
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+        }
+        .forgot-pass {
+            text-align: right;
+            font-size: 0.75rem;
+            color: var(--primary);
+            margin-top: 0.3rem;
+            cursor: pointer;
+        }
+        .auth-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: var(--transition);
+        }
+        .auth-btn:hover {
+            opacity: 0.9;
+        }
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 2rem 0;
+            color: #DDD;
+            font-size: 0.8rem;
+        }
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #EEE;
+        }
+        .divider span {
+            padding: 0 1rem;
+            color: var(--text-muted);
+        }
+        .social-auth {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        .social-btn {
+            width: 50px;
+            height: 50px;
+            border: 1px solid #EEE;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .social-btn:hover {
+            background: #F9F9F9;
+        }
+        .social-btn.google { color: #DB4437; }
+        .social-btn.apple { color: #000; }
+        .social-btn.facebook { color: #4267B2; }
+        .auth-footer {
+            margin-top: 2.5rem;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        .auth-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-bg">
+        <h1>DishCovery</h1>
+    </div>
+    <div class="auth-container">
+        <div class="auth-logo" style="display: flex; align-items: center; gap: 0.5rem; top: 2rem; right: 2rem; width: auto;">
+            <img src="images/logo_dishcovery.png" alt="Dishcovery Logo" style="width: 40px;">
+            <span style="font-weight: 800; color: #5F450F; font-family: 'Outfit', sans-serif;">DISHCOVERY</span>
+        </div>
+        <div class="auth-header">
+            <h2>login</h2>
+            <p>Welcome back! Please login to your account</p>
+        </div>
+        <form class="auth-form" id="login-form">
+            <div class="form-input">
+                <label>Email</label>
+                <input type="email" placeholder="Enter your email" required>
+            </div>
+            <div class="form-input">
+                <label>Password</label>
+                <input type="password" placeholder="Enter your password" required>
+                <div class="forgot-pass">Forgot Password?</div>
+            </div>
+            <button type="submit" class="auth-btn">LOGIN</button>
+        </form>
+
+        <div class="divider">
+            <span>or continue with</span>
+        </div>
+
+        <div class="social-auth">
+            <div class="social-btn google"><i class="fab fa-google"></i></div>
+            <div class="social-btn apple"><i class="fab fa-apple"></i></div>
+            <div class="social-btn facebook"><i class="fab fa-facebook-f"></i></div>
+        </div>
+
+        <div class="auth-footer">
+            Don't have an account? <a href="signup.html">Sign Up</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('login-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const email = e.target.querySelector('input[type="email"]').value;
+            const password = e.target.querySelector('input[type="password"]').value;
+
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    window.location.href = 'index.html';
+                } else {
+                    alert(data.error || 'Login failed');
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Connection error. Is the server running?');
+            }
+        };
+    </script>
+</body>
+</html>

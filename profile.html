@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile | Dishcovery</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Specific adjustments for profile image and layout if needed */
+        .profile-page {
+            padding-top: 8rem;
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="logo">
+            <img src="images/logo_dishcovery.png" alt="Dishcovery Logo">
+            <span>DISHCOVERY</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="index.html#recipes">RECIPE</a></li>
+            <li><a href="about.html">ABOUT US</a></li>
+        </ul>
+        <div class="nav-actions">
+            <div class="nav-search">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="spaghetti">
+            </div>
+            <div class="user-profile">
+                <div class="user-only" id="nav-create-btn" style="display: none;">
+                    <button class="btn btn-primary">CREATE RECIPE</button>
+                </div>
+                <div class="profile-dropdown-container">
+                    <div class="avatar" id="profile-trigger">
+                        <img src="images/profile_placeholder.jpg" alt="Profile" id="nav-avatar">
+                    </div>
+                    <div class="profile-dropdown" id="profile-menu">
+                        <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
+                        <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="profile-page">
+        <section class="profile-header">
+            <div class="profile-info-container">
+                <div class="profile-avatar-large">
+                    <img src="images/profile_placeholder.jpg" alt="User Avatar" id="profile-img">
+                    <div class="edit-avatar-btn"><i class="fas fa-pencil-alt"></i></div>
+                </div>
+                <div class="profile-details">
+                    <div style="display: flex; align-items: center; gap: 2rem; margin-bottom: 0.5rem;">
+                        <h1 id="profile-name" style="margin-bottom: 0;">USER NAME</h1>
+                        <button class="btn" id="edit-profile-trigger" style="border: 1px solid #DDD; padding: 0.5rem 1.2rem; font-size: 0.75rem;">EDIT PROFILE</button>
+                    </div>
+                    <p id="profile-bio" class="bio-text">A passionate home cook and nutrition enthusiast who loves turning fresh, seasonal ingredients into meaningful meals.</p>
+                    
+                    <div class="profile-stats">
+                        <div class="stat-item">
+                            <span class="stat-value" id="count-recipes">0</span>
+                            <span class="stat-label">Recipes</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">1.2k</span>
+                            <span class="stat-label">Followers</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value" id="count-favorites">0</span>
+                            <span class="stat-label">Favorites</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="profile-tabs">
+            <div class="tab-container">
+                <button class="tab-btn active" data-tab="recipes">Recipes (<span id="tab-count-recipes">0</span>)</button>
+                <button class="tab-btn" data-tab="favorites">Saved Favorites (<span id="tab-count-favorites">0</span>)</button>
+            </div>
+        </section>
+
+        <section class="profile-content">
+            <div class="content-heading">
+                <h2 id="content-title">DISCOVER RECIPES MADE BY YOU</h2>
+            </div>
+            
+            <div class="recipe-grid" id="profile-recipe-grid">
+                <!-- Recipes will be loaded here dynamically -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Create Recipe Modal (Reused) -->
+    <div id="create-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>CREATE NEW RECIPE</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <form id="create-recipe-form">
+                <div class="form-group">
+                    <label>Recipe Name</label>
+                    <input type="text" id="new-recipe-name" placeholder="e.g. Spaghetti Aglio e Olio" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="new-recipe-category">
+                            <option value="Breakfast">Breakfast</option>
+                            <option value="Main Dish">Main Dish</option>
+                            <option value="Dessert">Dessert</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Image URL</label>
+                        <input type="text" id="new-recipe-img" placeholder="https://example.com/image.jpg">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Total Time (mins)</label>
+                        <input type="text" id="new-recipe-time" placeholder="20 MIN">
+                    </div>
+                    <div class="form-group">
+                        <label>Servings</label>
+                        <input type="number" id="new-recipe-servings" placeholder="2">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Ingredients & Directions</label>
+                    <textarea id="new-recipe-desc" placeholder="List ingredients and steps..." rows="5"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">CREATE RECIPE</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div id="edit-profile-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>EDIT PROFILE</h2>
+                <span class="close-edit-modal" style="position: absolute; right: 1.5rem; top: 1rem; font-size: 2rem; cursor: pointer; color: var(--text-muted);">&times;</span>
+            </div>
+            <form id="edit-profile-form">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="edit-username" required>
+                </div>
+                <div class="form-group">
+                    <label>Profile Picture URL</label>
+                    <input type="text" id="edit-profile-pic" placeholder="https://example.com/avatar.jpg">
+                </div>
+                <div class="form-group">
+                    <label>Bio</label>
+                    <textarea id="edit-bio" rows="4" placeholder="Tell us about your cooking journey..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">SAVE CHANGES</button>
+            </form>
+        </div>
+    </div>
+
+    <footer class="premium-footer">
+        <div class="footer-top">
+            <div class="footer-brand-section">
+                <div class="footer-logo-text">DISHCOVERY</div>
+                <p class="footer-tagline">Explore thousands of curated recipes, filter by ingredients you have, and share your culinary creations with the world.</p>
+                <div class="footer-social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-nav-section">
+                <div class="footer-nav-col">
+                    <h4>QUICK LINKS</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#recipes">Recipes</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-nav-col">
+                    <h4>SUPPORT</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-newsletter">
+                <h4>NEWSLETTER</h4>
+                <p>Subscribe to get the latest recipes and cooking tips.</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Your email address">
+                    <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Dishcovery. All rights reserved.</p>
+            <div class="footer-bottom-links">
+                <a href="#">Terms & Conditions</a>
+                <a href="#">Privacy Policy</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="profile.js"></script>
+    <script src="create_recipe.js"></script>
+</body>
+</html>
