@@ -39,37 +39,44 @@
         .auth-container {
             flex: 0.8; 
             max-width: 550px;
-            padding: 4rem 3rem;
+            padding: 0 3rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
             position: relative;
             background: white;
+            height: 100vh;
+            overflow-y: auto;
+            box-sizing: border-box;
         }
         .auth-logo {
             position: absolute;
             top: 2rem;
             right: 2rem;
-            width: 40px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            width: auto;
         }
         .auth-header {
-            margin-bottom: 2.5rem;
+            margin-bottom: 1.5rem;
             text-align: center;
         }
         .auth-header h2 {
             font-size: 2.5rem;
             color: var(--primary);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.3rem;
             font-family: 'Outfit', serif;
         }
         .auth-header p {
             color: var(--text-muted);
             font-size: 0.9rem;
+            margin: 0;
         }
         .auth-form {
             display: flex;
             flex-direction: column;
-            gap: 1.2rem;
+            gap: 1rem;
         }
         .form-input {
             position: relative;
@@ -84,9 +91,10 @@
             width: 100%;
             padding: 0.8rem 1rem;
             background: #F4F4F4;
-            border: none;
+            border: 1px solid transparent;
             border-radius: 8px;
             font-family: inherit;
+            box-sizing: border-box;
         }
         .forgot-pass {
             text-align: right;
@@ -103,17 +111,30 @@
             border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
-            margin-top: 1rem;
+            margin-top: 0.5rem;
             transition: var(--transition);
         }
-        .auth-btn:hover {
-            opacity: 0.9;
+        #error-msg {
+            color: #d93025;
+            background-color: #fce8e6;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-bottom: 0.8rem;
+            display: none; 
+            align-items: center;
+            gap: 8px;
+            font-family: 'Outfit', sans-serif;
+        }
+        .input-error {
+            border: 1px solid #d93025 !important;
+            background: #fff4f4 !important;
         }
         .divider {
             display: flex;
             align-items: center;
             text-align: center;
-            margin: 2rem 0;
+            margin: 1.2rem 0;
             color: #DDD;
             font-size: 0.8rem;
         }
@@ -132,24 +153,17 @@
             justify-content: center;
         }
         .social-btn {
-            width: 50px;
-            height: 50px;
+            width: 45px;
+            height: 45px;
             border: 1px solid #EEE;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: var(--transition);
         }
-        .social-btn:hover {
-            background: #F9F9F9;
-        }
-        .social-btn.google { color: #DB4437; }
-        .social-btn.apple { color: #000; }
-        .social-btn.facebook { color: #4267B2; }
         .auth-footer {
-            margin-top: 2.5rem;
+            margin-top: 1.5rem;
             text-align: center;
             font-size: 0.85rem;
             color: var(--text-muted);
@@ -166,7 +180,7 @@
         <h1>DishCovery</h1>
     </div>
     <div class="auth-container">
-        <div class="auth-logo" style="display: flex; align-items: center; gap: 0.5rem; top: 2rem; right: 2rem; width: auto;">
+        <div class="auth-logo">
             <img src="images/logo_dishcovery.png" alt="Dishcovery Logo" style="width: 40px;">
             <span style="font-weight: 800; color: #5F450F; font-family: 'Outfit', sans-serif;">DISHCOVERY</span>
         </div>
@@ -174,14 +188,20 @@
             <h2>login</h2>
             <p>Welcome back! Please login to your account</p>
         </div>
+
+        <div id="error-msg">
+            <i class="fas fa-exclamation-circle"></i> 
+            <span id="error-text"></span>
+        </div>
+
         <form class="auth-form" id="login-form">
             <div class="form-input">
                 <label>Email</label>
-                <input type="email" placeholder="Enter your email" required>
+                <input type="email" id="email" placeholder="Enter your email">
             </div>
             <div class="form-input">
                 <label>Password</label>
-                <input type="password" placeholder="Enter your password" required>
+                <input type="password" id="password" placeholder="Enter your password">
                 <div class="forgot-pass">Forgot Password?</div>
             </div>
             <button type="submit" class="auth-btn">LOGIN</button>
@@ -192,9 +212,9 @@
         </div>
 
         <div class="social-auth">
-            <div class="social-btn google"><i class="fab fa-google"></i></div>
-            <div class="social-btn apple"><i class="fab fa-apple"></i></div>
-            <div class="social-btn facebook"><i class="fab fa-facebook-f"></i></div>
+            <div class="social-btn"><i class="fab fa-google" style="color: #DB4437;"></i></div>
+            <div class="social-btn"><i class="fab fa-apple" style="color: #000;"></i></div>
+            <div class="social-btn"><i class="fab fa-facebook-f" style="color: #4267B2;"></i></div>
         </div>
 
         <div class="auth-footer">
@@ -205,28 +225,48 @@
     <script>
         document.getElementById('login-form').onsubmit = async (e) => {
             e.preventDefault();
-            const email = e.target.querySelector('input[type="email"]').value;
-            const password = e.target.querySelector('input[type="password"]').value;
+            const emailField = document.getElementById('email');
+            const passwordField = document.getElementById('password');
+            const errorMsg = document.getElementById('error-msg');
+            const errorText = document.getElementById('error-text');
+
+            errorMsg.style.display = 'none';
+            emailField.classList.remove('input-error');
+            passwordField.classList.remove('input-error');
+
+            if (!emailField.value || !passwordField.value) {
+                errorText.innerText = "Please fill in all fields.";
+                errorMsg.style.display = 'flex';
+                if(!emailField.value) emailField.classList.add('input-error');
+                if(!passwordField.value) passwordField.classList.add('input-error');
+                return;
+            }
 
             try {
                 const response = await fetch('/api/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password })
+                    body: JSON.stringify({ email: emailField.value, password: passwordField.value })
                 });
-                
                 const data = await response.json();
-                
                 if (data.success) {
                     localStorage.setItem('isLoggedIn', 'true');
                     localStorage.setItem('user', JSON.stringify(data.user));
                     window.location.href = 'index.html';
                 } else {
-                    alert(data.error || 'Login failed');
+                    const msg = (data.error || "").toLowerCase();
+                    if (msg.includes("found") || msg.includes("exist")) {
+                        errorText.innerText = "Account not found. Please sign up first.";
+                    } else {
+                        errorText.innerText = "The email or password you entered is incorrect.";
+                    }
+                    errorMsg.style.display = 'flex';
+                    emailField.classList.add('input-error');
+                    passwordField.classList.add('input-error');
                 }
             } catch (err) {
-                console.error(err);
-                alert('Connection error. Is the server running?');
+                errorText.innerText = "Connection error. Is the server running?";
+                errorMsg.style.display = 'flex';
             }
         };
     </script>
